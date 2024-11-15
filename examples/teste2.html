@@ -9,8 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="/dist/networked-aframe.js"></script>
+    <script src="/dist/ammo.wasm.js"></script>
     <script src="/dist/aframe-physics-system.js"></script>
-    <script src="/dist/aframe-extras.js"></script>
 
     <script>
       // see issue https://github.com/networked-aframe/networked-aframe/issues/267
@@ -43,7 +43,7 @@
       debug: true;
       adapter: easyrtc;"
       renderer="physicallyCorrectLights: true;"
-      physics="gravity:-9.8; debug:true;"
+      physics="driver: ammo; debug: true;"
     >
       <a-assets>
         <!-- Templates -->
@@ -63,14 +63,10 @@
         </template>
         <!-- Background -->
         <a-asset-item id="medialab" src="./assets/medialab.glb"></a-asset-item>
-        <a-asset-item
-          id="navmesh"
-          src="https://cdn.glitch.global/ec8608a4-ade6-4325-9589-578def835a9a/navmesh.glb?v=1679836266625"
-        ></a-asset-item>
         <!-- /Templates -->
       </a-assets>
 
-      <a-entity id="rig" nav-agent movement-controls="constrainToNavMesh: true;">
+      <a-entity id="rig" ammo-body="type: static" ammo-shape="type: box">
         <a-entity
           id="player"
           networked="template:#avatar-template;attachTemplateToLocal:false;"
@@ -79,26 +75,17 @@
           spawn-in-circle="radius:3"
           wasd-controls
           look-controls
-          static-body
         >
           <a-sphere class="head" visible="false"></a-sphere>
         </a-entity>
       </a-entity>
 
-      <a-entity gltf-model="#navmesh" nav-mesh id="mesh" visible="true"> </a-entity>
+      <a-plane position="0 0 0" rotation="-90 0 0" width="300" height="300" visible="false"></a-plane>
 
-      <a-plane position="0 0 0" rotation="-90 0 0" width="300" height="300" static-body visible="false"></a-plane>
+      <a-gltf-model src="#medialab" position="0 0 0"></a-gltf-model>
 
-      <!-- Add static-body to the medialab model -->
-      <a-gltf-model src="#medialab" position="0 0 0" dynamic-body="linearDamping:0.99;"></a-gltf-model>
-
-      <a-box position="11 5 9" dynamic-body color="blue"></a-box>
-      <!-- Test dynamic object -->
-      <a-box position="11 1 9" static-body color="red"></a-box>
-      <!-- Test dynamic object -->
-
-      <a-box position="15 5 9" dynamic-body="linearDamping:0.99;" color="green"></a-box>
-      <!-- Test dynamic object -->
+      <a-box position="11 5 9" color="blue" ammo-body="type: dynamic" ammo-shape="type: box"></a-box>
+      <a-box position="11 1 9" color="red"></a-box>
 
       <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
       <a-entity environment="preset:default"></a-entity>
