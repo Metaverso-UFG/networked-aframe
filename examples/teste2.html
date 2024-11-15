@@ -43,7 +43,7 @@
       debug: true;
       adapter: easyrtc;"
       renderer="physicallyCorrectLights: true;"
-      physics="driver: ammo; debug: true;"
+      physics="driver:ammo; gravity:-9.8; debug:true;"
     >
       <a-assets>
         <!-- Templates -->
@@ -66,7 +66,7 @@
         <!-- /Templates -->
       </a-assets>
 
-      <a-entity id="rig" ammo-body="type: static" ammo-shape="type: box">
+      <a-entity id="rig">
         <a-entity
           id="player"
           networked="template:#avatar-template;attachTemplateToLocal:false;"
@@ -80,11 +80,10 @@
         </a-entity>
       </a-entity>
 
-      <a-plane position="0 0 0" rotation="-90 0 0" width="300" height="300" visible="false"></a-plane>
+      <a-plane position="0 0 0" rotation="-90 0 0" width="300" height="300" visible="false" static-body></a-plane>
 
-      <a-gltf-model src="#medialab" position="0 0 0"></a-gltf-model>
+      <a-gltf-model src="#medialab" position="0 0 0" ammo-body="type: static" ammo-shape="type: box"></a-gltf-model>
 
-      <a-box position="11 5 9" color="blue" ammo-body="type: dynamic" ammo-shape="type: box"></a-box>
       <a-box position="11 1 9" color="red"></a-box>
 
       <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>

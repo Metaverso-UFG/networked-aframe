@@ -63,14 +63,10 @@
         </template>
         <!-- Background -->
         <a-asset-item id="medialab" src="./assets/medialab.glb"></a-asset-item>
-        <a-asset-item
-          id="navmesh"
-          src="https://cdn.glitch.global/ec8608a4-ade6-4325-9589-578def835a9a/navmesh.glb?v=1679836266625"
-        ></a-asset-item>
         <!-- /Templates -->
       </a-assets>
 
-      <a-entity id="rig" nav-agent movement-controls="constrainToNavMesh: true;">
+      <a-entity id="rig">
         <a-entity
           id="player"
           networked="template:#avatar-template;attachTemplateToLocal:false;"
@@ -84,8 +80,6 @@
           <a-sphere class="head" visible="false"></a-sphere>
         </a-entity>
       </a-entity>
-
-      <a-entity gltf-model="#navmesh" nav-mesh id="mesh" visible="true"> </a-entity>
 
       <a-plane position="0 0 0" rotation="-90 0 0" width="300" height="300" static-body visible="false"></a-plane>
 
