@@ -52,7 +52,7 @@
 
         <!-- Templates -->
         <template id="avatar-template">
-          <a-entity class="avatar">
+          <a-entity class="avatar" networked-audio-source>
             <a-entity gltf-model="#avatarModel" scale="1 1 1" rotation="-10 180 0"> </a-entity>
           </a-entity>
         </template>
@@ -66,7 +66,6 @@
           look-controls
           position="0 1.6 0"
           spawn-in-circle="radius:3"
-          networked-audio-source
         >
           <a-entity id="head" camera position="0 0.58 0"> </a-entity>
         </a-entity>
