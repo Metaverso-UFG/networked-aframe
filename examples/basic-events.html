@@ -10,20 +10,52 @@
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="/dist/networked-aframe.js"></script>
     <script>
-      // see issue https://github.com/networked-aframe/networked-aframe/issues/267
       NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
       NAF.schemas.getComponents = (template) => {
         if (!NAF.schemas.hasTemplate('#avatar-template')) {
           NAF.schemas.add({
             template: '#avatar-template',
             components: [
-              'position',
-              'rotation',
               {
-                selector: '.head',
-                component: 'material',
-                property: 'color'
+                component: 'position',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
+              },
+              {
+                component: 'rotation',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
+              },
+              {
+                selector: '.avatar',
+                component: 'gltf-model'
               }
+            ]
+          });
+          NAF.schemas.add({
+            template: '#left-hand-template',
+            components: [
+              {
+                component: 'position',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
+              },
+              {
+                component: 'rotation',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
+              },
+              'networked-hand-controls'
+            ]
+          });
+          NAF.schemas.add({
+            template: '#right-hand-template',
+            components: [
+              {
+                component: 'position',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
+              },
+              {
+                component: 'rotation',
+                requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
+              },
+              'networked-hand-controls'
             ]
           });
         }
@@ -47,6 +79,9 @@
       <a-assets>
         <!-- Templates -->
 
+        <a-asset-item id="leftHandModel" src="./assets/leftHandHigh.glb"></a-asset-item>
+        <a-asset-item id="rightHandModel" src="./assets/rightHandHigh.glb"></a-asset-item>
+
         <!-- Avatar -->
         <template id="avatar-template">
           <a-entity class="avatar">
@@ -59,6 +94,22 @@
                 <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
               </a-sphere>
             </a-entity>
+          </a-entity>
+        </template>
+
+        <template id="left-hand-template">
+          <a-entity class="left-hand">
+            <a-entity
+              glft-model="#leftHandModel"
+            ></a-entity>
+          </a-entity>
+        </template>
+
+        <template id="right-hand-template">
+          <a-entity class="right-hand">
+            <a-entity
+              glft-model="#rightHandModel"
+            ></a-entity>
           </a-entity>
         </template>
 
@@ -76,6 +127,28 @@
           look-controls
         >
           <a-sphere class="head" visible="false" random-color></a-sphere>
+          <a-entity 
+          id="leftHand"
+          hand-controls="hand: left; handModelStyle: highPoly;"
+          networked="template:#left-hand-template"
+          hand-tracking-controls="hand: left;"
+          hand-tracking-grab-controls="hand: left;"
+          gltf-model="#leftHandModel"
+          vive-controls="hand: left"
+          position="0.3 0.1 0"
+          visible="true"
+        ></a-entity>
+        <a-entity 
+          id="rightHand" 
+          hand-controls="hand: right; handModelStyle: highPoly;"
+          networked="template:#right-hand-template"
+          hand-tracking-controls="hand: right;"
+          hand-tracking-grab-controls="hand: right;"
+          gltf-model="rightHandModel"
+          vive-controls="hand: right"
+          position="-0.3 0.1 0"
+          visible="true"
+        ></a-entity>
         </a-entity>
       </a-entity>
 
